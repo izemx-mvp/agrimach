@@ -62,7 +62,7 @@ function Dashboard() {
   return (
     <div className="space-y-6">
       <PageHeader
-        title="Bonjour Mohamed 👋"
+        title="Bonjour Mohamed"
         subtitle="Voici l'activité commerciale de votre entreprise aujourd'hui."
         actions={
           <>
