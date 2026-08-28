@@ -92,7 +92,8 @@ function makeRng(seed: number) {
   };
 }
 const rng = makeRng(20260828);
-const pick = <T,>(arr: readonly T[]) => arr[Math.floor(rng() * arr.length)];
+const pick = <T,>(arr: readonly T[]): T => arr[Math.floor(rng() * arr.length)] as T;
+const at = <T,>(arr: readonly T[], i: number): T => arr[i] as T;
 const between = (a: number, b: number) => Math.floor(rng() * (b - a + 1)) + a;
 
 const DAY = 86400000;
@@ -176,8 +177,8 @@ const PRICE_BASE: Record<Category, [number, number]> = {
 };
 
 export const machines: Machine[] = Array.from({ length: 34 }, (_, i) => {
-  const category = CATEGORIES[i % CATEGORIES.length];
-  const model = MODEL_ROOTS[category][i % MODEL_ROOTS[category].length];
+  const category = at(CATEGORIES, i % CATEGORIES.length);
+  const model = at(MODEL_ROOTS[category], i % MODEL_ROOTS[category].length);
   const brand = pick(BRANDS);
   const [lo, hi] = PRICE_BASE[category];
   const price = Math.round((lo + rng() * (hi - lo)) / 5000) * 5000;
@@ -252,7 +253,7 @@ export interface Client {
 function person() {
   const first = pick(FIRST);
   const last = pick(LAST);
-  return { first, last, name: `${first} ${last}`, initials: `${first[0]}${last[0]}` };
+  return { first, last, name: `${first} ${last}`, initials: `${first[0]}${last[0]}` } as { first: string; last: string; name: string; initials: string };
 }
 
 export const clients: Client[] = Array.from({ length: 42 }, (_, i) => {
@@ -262,7 +263,7 @@ export const clients: Client[] = Array.from({ length: 42 }, (_, i) => {
     id: `CLI-${2000 + i}`,
     name: p.name,
     company,
-    email: `${p.first.toLowerCase()}.${p.last.toLowerCase().replace(/[^a-z]/g, "")}@${company.split(" ")[1].toLowerCase().replace(/[^a-z]/g, "")}.ma`,
+    email: `${p.first.toLowerCase()}.${p.last.toLowerCase().replace(/[^a-z]/g, "")}@${(company.split(" ")[1] ?? company).toLowerCase().replace(/[^a-z]/g, "")}.ma`,
     phone: `+212 6 ${between(10, 79)} ${between(10, 99)} ${between(10, 99)} ${between(10, 99)}`,
     city: pick(CITIES),
     country: rng() > 0.85 ? pick(COUNTRIES.slice(1)) : "Maroc",
@@ -323,7 +324,7 @@ export interface Prospect {
 
 export const prospects: Prospect[] = Array.from({ length: 84 }, (_, i) => {
   const p = person();
-  const machine = machines[between(0, machines.length - 1)];
+  const machine = at(machines, between(0, machines.length - 1));
   const score = between(28, 98);
   const budgetMin = Math.round((machine.price * 0.85) / 10000) * 10000;
   const company = `${pick(COMPANY_PREFIX)} ${pick(COMPANY_SUFFIX)}`;
@@ -379,8 +380,8 @@ export interface DemandeItem {
 }
 
 export const demandes: DemandeItem[] = Array.from({ length: 46 }, (_, i) => {
-  const client = clients[between(0, clients.length - 1)];
-  const machine = machines[between(0, machines.length - 1)];
+  const client = at(clients, between(0, clients.length - 1));
+  const machine = at(machines, between(0, machines.length - 1));
   const quantity = between(1, 3);
   return {
     id: `DEM-${4000 + i}`,
@@ -430,8 +431,8 @@ function computeQuote(unitPrice: number, quantity: number, discount: number, del
 }
 
 export const quotes: Quote[] = Array.from({ length: 54 }, (_, i) => {
-  const client = clients[between(0, clients.length - 1)];
-  const machine = machines[between(0, machines.length - 1)];
+  const client = at(clients, between(0, clients.length - 1));
+  const machine = at(machines, between(0, machines.length - 1));
   const quantity = between(1, 3);
   const discount = pick([0, 2, 3, 5, 7, 10]);
   const delivery = between(4, 24) * 1000;
@@ -602,7 +603,7 @@ export interface Conversation {
 }
 
 export const conversations: Conversation[] = Array.from({ length: 24 }, (_, i) => {
-  const p = prospects[i * 3];
+  const p = at(prospects, i * 3);
   const machine = machineById(p.machineId)!;
   const alt = machines.filter((m) => m.category === machine.category && m.id !== machine.id).slice(0, 2);
   const t = (min: number) => new Date(NOW - min * 60000).toISOString();
