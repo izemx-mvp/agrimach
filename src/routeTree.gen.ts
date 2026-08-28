@@ -10,33 +10,53 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as LoginAdminRouteImport } from './routes/login.admin'
+import { Route as LoginClientRouteImport } from './routes/login.client'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LoginAdminRoute = LoginAdminRouteImport.update({
+  id: '/login/admin',
+  path: '/login/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginClientRoute = LoginClientRouteImport.update({
+  id: '/login/client',
+  path: '/login/client',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/login/admin': typeof LoginAdminRoute
+  '/login/client': typeof LoginClientRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/login/admin': typeof LoginAdminRoute
+  '/login/client': typeof LoginClientRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/login/admin': typeof LoginAdminRoute
+  '/login/client': typeof LoginClientRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/login/admin' | '/login/client'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/login/admin' | '/login/client'
+  id: '__root__' | '/' | '/login/admin' | '/login/client'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  LoginAdminRoute: typeof LoginAdminRoute
+  LoginClientRoute: typeof LoginClientRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +68,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/login/admin': {
+      id: '/login/admin'
+      path: '/login/admin'
+      fullPath: '/login/admin'
+      preLoaderRoute: typeof LoginAdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login/client': {
+      id: '/login/client'
+      path: '/login/client'
+      fullPath: '/login/client'
+      preLoaderRoute: typeof LoginClientRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  LoginAdminRoute: LoginAdminRoute,
+  LoginClientRoute: LoginClientRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
