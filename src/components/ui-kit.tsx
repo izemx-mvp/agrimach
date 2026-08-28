@@ -12,8 +12,8 @@ export function AnimatedNumber({
   duration = 1100,
 }: {
   value: number;
-  format?: (n: number) => string;
-  duration?: number;
+  format?: ((n: number) => string) | undefined;
+  duration?: number | undefined;
 }) {
   const [display, setDisplay] = useState(0);
   const raf = useRef<number>(0);
