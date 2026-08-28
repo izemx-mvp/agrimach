@@ -10,33 +10,110 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AdminRouteImport } from './routes/admin'
+import { Route as AdminIndexRouteImport } from './routes/admin.index'
+import { Route as AdminProspectsRouteImport } from './routes/admin.prospects'
+import { Route as LoginAdminRouteImport } from './routes/login.admin'
+import { Route as LoginClientRouteImport } from './routes/login.client'
+import { Route as AdminProspectsIdRouteImport } from './routes/admin.prospects.$id'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminIndexRoute = AdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminProspectsRoute = AdminProspectsRouteImport.update({
+  id: '/prospects',
+  path: '/prospects',
+  getParentRoute: () => AdminRoute,
+} as any)
+const LoginAdminRoute = LoginAdminRouteImport.update({
+  id: '/login/admin',
+  path: '/login/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginClientRoute = LoginClientRouteImport.update({
+  id: '/login/client',
+  path: '/login/client',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminProspectsIdRoute = AdminProspectsIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => AdminProspectsRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRouteWithChildren
+  '/admin/prospects': typeof AdminProspectsRouteWithChildren
+  '/login/admin': typeof LoginAdminRoute
+  '/login/client': typeof LoginClientRoute
+  '/admin/': typeof AdminIndexRoute
+  '/admin/prospects/$id': typeof AdminProspectsIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/admin/prospects': typeof AdminProspectsRouteWithChildren
+  '/login/admin': typeof LoginAdminRoute
+  '/login/client': typeof LoginClientRoute
+  '/admin': typeof AdminIndexRoute
+  '/admin/prospects/$id': typeof AdminProspectsIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/admin': typeof AdminRouteWithChildren
+  '/admin/prospects': typeof AdminProspectsRouteWithChildren
+  '/login/admin': typeof LoginAdminRoute
+  '/login/client': typeof LoginClientRoute
+  '/admin/': typeof AdminIndexRoute
+  '/admin/prospects/$id': typeof AdminProspectsIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/admin'
+    | '/admin/prospects'
+    | '/login/admin'
+    | '/login/client'
+    | '/admin/'
+    | '/admin/prospects/$id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/admin/prospects'
+    | '/login/admin'
+    | '/login/client'
+    | '/admin'
+    | '/admin/prospects/$id'
+  id:
+    | '__root__'
+    | '/'
+    | '/admin'
+    | '/admin/prospects'
+    | '/login/admin'
+    | '/login/client'
+    | '/admin/'
+    | '/admin/prospects/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AdminRoute: typeof AdminRouteWithChildren
+  LoginAdminRoute: typeof LoginAdminRoute
+  LoginClientRoute: typeof LoginClientRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +125,80 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/': {
+      id: '/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/prospects': {
+      id: '/admin/prospects'
+      path: '/prospects'
+      fullPath: '/admin/prospects'
+      preLoaderRoute: typeof AdminProspectsRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/login/admin': {
+      id: '/login/admin'
+      path: '/login/admin'
+      fullPath: '/login/admin'
+      preLoaderRoute: typeof LoginAdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login/client': {
+      id: '/login/client'
+      path: '/login/client'
+      fullPath: '/login/client'
+      preLoaderRoute: typeof LoginClientRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/prospects/$id': {
+      id: '/admin/prospects/$id'
+      path: '/$id'
+      fullPath: '/admin/prospects/$id'
+      preLoaderRoute: typeof AdminProspectsIdRouteImport
+      parentRoute: typeof AdminProspectsRoute
+    }
   }
 }
 
+interface AdminProspectsRouteChildren {
+  AdminProspectsIdRoute: typeof AdminProspectsIdRoute
+}
+
+const AdminProspectsRouteChildren: AdminProspectsRouteChildren = {
+  AdminProspectsIdRoute: AdminProspectsIdRoute,
+}
+
+const AdminProspectsRouteWithChildren = AdminProspectsRoute._addFileChildren(
+  AdminProspectsRouteChildren,
+)
+
+interface AdminRouteChildren {
+  AdminProspectsRoute: typeof AdminProspectsRouteWithChildren
+  AdminIndexRoute: typeof AdminIndexRoute
+}
+
+const AdminRouteChildren: AdminRouteChildren = {
+  AdminProspectsRoute: AdminProspectsRouteWithChildren,
+  AdminIndexRoute: AdminIndexRoute,
+}
+
+const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AdminRoute: AdminRouteWithChildren,
+  LoginAdminRoute: LoginAdminRoute,
+  LoginClientRoute: LoginClientRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
