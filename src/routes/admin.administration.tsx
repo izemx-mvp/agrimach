@@ -89,7 +89,7 @@ function AdministrationPage() {
                     </div>
                   </div>
                   <div className="flex items-center gap-3">
-                    <Select defaultValue={ROLES[Math.min(i + 1, ROLES.length - 1)]}>
+                    <Select defaultValue={ROLES[Math.min(i + 1, ROLES.length - 1)] ?? "Commercial"}>
                       <SelectTrigger className="w-[190px]"><SelectValue /></SelectTrigger>
                       <SelectContent>{ROLES.map((role) => <SelectItem key={role} value={role}>{role}</SelectItem>)}</SelectContent>
                     </Select>
