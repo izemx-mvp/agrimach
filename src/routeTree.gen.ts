@@ -28,6 +28,10 @@ import { Route as AdminPaiementsRouteImport } from './routes/admin.paiements'
 import { Route as AdminProspectsRouteImport } from './routes/admin.prospects'
 import { Route as ClientIndexRouteImport } from './routes/client.index'
 import { Route as ClientCatalogueRouteImport } from './routes/client.catalogue'
+import { Route as ClientCommandesRouteImport } from './routes/client.commandes'
+import { Route as ClientDemandesRouteImport } from './routes/client.demandes'
+import { Route as ClientDevisRouteImport } from './routes/client.devis'
+import { Route as ClientFacturesRouteImport } from './routes/client.factures'
 import { Route as LoginAdminRouteImport } from './routes/login.admin'
 import { Route as LoginClientRouteImport } from './routes/login.client'
 import { Route as AdminCatalogueIdRouteImport } from './routes/admin.catalogue.$id'
@@ -129,6 +133,26 @@ const ClientCatalogueRoute = ClientCatalogueRouteImport.update({
   path: '/catalogue',
   getParentRoute: () => ClientRoute,
 } as any)
+const ClientCommandesRoute = ClientCommandesRouteImport.update({
+  id: '/commandes',
+  path: '/commandes',
+  getParentRoute: () => ClientRoute,
+} as any)
+const ClientDemandesRoute = ClientDemandesRouteImport.update({
+  id: '/demandes',
+  path: '/demandes',
+  getParentRoute: () => ClientRoute,
+} as any)
+const ClientDevisRoute = ClientDevisRouteImport.update({
+  id: '/devis',
+  path: '/devis',
+  getParentRoute: () => ClientRoute,
+} as any)
+const ClientFacturesRoute = ClientFacturesRouteImport.update({
+  id: '/factures',
+  path: '/factures',
+  getParentRoute: () => ClientRoute,
+} as any)
 const LoginAdminRoute = LoginAdminRouteImport.update({
   id: '/login/admin',
   path: '/login/admin',
@@ -173,6 +197,10 @@ export interface FileRoutesByFullPath {
   '/admin/paiements': typeof AdminPaiementsRoute
   '/admin/prospects': typeof AdminProspectsRouteWithChildren
   '/client/catalogue': typeof ClientCatalogueRouteWithChildren
+  '/client/commandes': typeof ClientCommandesRoute
+  '/client/demandes': typeof ClientDemandesRoute
+  '/client/devis': typeof ClientDevisRoute
+  '/client/factures': typeof ClientFacturesRoute
   '/login/admin': typeof LoginAdminRoute
   '/login/client': typeof LoginClientRoute
   '/admin/': typeof AdminIndexRoute
@@ -197,6 +225,10 @@ export interface FileRoutesByTo {
   '/admin/paiements': typeof AdminPaiementsRoute
   '/admin/prospects': typeof AdminProspectsRouteWithChildren
   '/client/catalogue': typeof ClientCatalogueRouteWithChildren
+  '/client/commandes': typeof ClientCommandesRoute
+  '/client/demandes': typeof ClientDemandesRoute
+  '/client/devis': typeof ClientDevisRoute
+  '/client/factures': typeof ClientFacturesRoute
   '/login/admin': typeof LoginAdminRoute
   '/login/client': typeof LoginClientRoute
   '/admin': typeof AdminIndexRoute
@@ -224,6 +256,10 @@ export interface FileRoutesById {
   '/admin/paiements': typeof AdminPaiementsRoute
   '/admin/prospects': typeof AdminProspectsRouteWithChildren
   '/client/catalogue': typeof ClientCatalogueRouteWithChildren
+  '/client/commandes': typeof ClientCommandesRoute
+  '/client/demandes': typeof ClientDemandesRoute
+  '/client/devis': typeof ClientDevisRoute
+  '/client/factures': typeof ClientFacturesRoute
   '/login/admin': typeof LoginAdminRoute
   '/login/client': typeof LoginClientRoute
   '/admin/': typeof AdminIndexRoute
@@ -252,6 +288,10 @@ export interface FileRouteTypes {
     | '/admin/paiements'
     | '/admin/prospects'
     | '/client/catalogue'
+    | '/client/commandes'
+    | '/client/demandes'
+    | '/client/devis'
+    | '/client/factures'
     | '/login/admin'
     | '/login/client'
     | '/admin/'
@@ -276,6 +316,10 @@ export interface FileRouteTypes {
     | '/admin/paiements'
     | '/admin/prospects'
     | '/client/catalogue'
+    | '/client/commandes'
+    | '/client/demandes'
+    | '/client/devis'
+    | '/client/factures'
     | '/login/admin'
     | '/login/client'
     | '/admin'
@@ -302,6 +346,10 @@ export interface FileRouteTypes {
     | '/admin/paiements'
     | '/admin/prospects'
     | '/client/catalogue'
+    | '/client/commandes'
+    | '/client/demandes'
+    | '/client/devis'
+    | '/client/factures'
     | '/login/admin'
     | '/login/client'
     | '/admin/'
@@ -454,6 +502,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ClientCatalogueRouteImport
       parentRoute: typeof ClientRoute
     }
+    '/client/commandes': {
+      id: '/client/commandes'
+      path: '/commandes'
+      fullPath: '/client/commandes'
+      preLoaderRoute: typeof ClientCommandesRouteImport
+      parentRoute: typeof ClientRoute
+    }
+    '/client/demandes': {
+      id: '/client/demandes'
+      path: '/demandes'
+      fullPath: '/client/demandes'
+      preLoaderRoute: typeof ClientDemandesRouteImport
+      parentRoute: typeof ClientRoute
+    }
+    '/client/devis': {
+      id: '/client/devis'
+      path: '/devis'
+      fullPath: '/client/devis'
+      preLoaderRoute: typeof ClientDevisRouteImport
+      parentRoute: typeof ClientRoute
+    }
+    '/client/factures': {
+      id: '/client/factures'
+      path: '/factures'
+      fullPath: '/client/factures'
+      preLoaderRoute: typeof ClientFacturesRouteImport
+      parentRoute: typeof ClientRoute
+    }
     '/login/admin': {
       id: '/login/admin'
       path: '/login/admin'
@@ -566,11 +642,19 @@ const ClientCatalogueRouteWithChildren = ClientCatalogueRoute._addFileChildren(
 
 interface ClientRouteChildren {
   ClientCatalogueRoute: typeof ClientCatalogueRouteWithChildren
+  ClientCommandesRoute: typeof ClientCommandesRoute
+  ClientDemandesRoute: typeof ClientDemandesRoute
+  ClientDevisRoute: typeof ClientDevisRoute
+  ClientFacturesRoute: typeof ClientFacturesRoute
   ClientIndexRoute: typeof ClientIndexRoute
 }
 
 const ClientRouteChildren: ClientRouteChildren = {
   ClientCatalogueRoute: ClientCatalogueRouteWithChildren,
+  ClientCommandesRoute: ClientCommandesRoute,
+  ClientDemandesRoute: ClientDemandesRoute,
+  ClientDevisRoute: ClientDevisRoute,
+  ClientFacturesRoute: ClientFacturesRoute,
   ClientIndexRoute: ClientIndexRoute,
 }
 
