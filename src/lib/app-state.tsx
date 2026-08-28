@@ -50,7 +50,7 @@ const CREDENTIALS: Record<Space, { email: string; password: string; user: Sessio
       email: "client@agri-platform.demo",
       role: "Domaine Al Baraka · Kénitra",
       initials: "AB",
-      clientId: seedClients[0]?.id,
+      clientId: seedClients[0]!.id,
     },
   },
 };
